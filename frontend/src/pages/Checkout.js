@@ -7,7 +7,7 @@ import { CartContext } from '../context/CartContext';
 import api from '../services/api';
 import './Checkout.css';
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || 'pk_test_default');
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || '');
 
 const Checkout = () => {
   const { cart, getCartTotal, clearCart } = useContext(CartContext);
@@ -20,6 +20,18 @@ const Checkout = () => {
     country: ''
   });
   const [clientSecret, setClientSecret] = useState('');
+
+  if (!process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY) {
+    return (
+      <div className="checkout-page">
+        <div className="checkout-container">
+          <p style={{ color: 'red', padding: '2rem' }}>
+            Payment system is not configured. Please contact support.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const handleShippingSubmit = async (e) => {
     e.preventDefault();

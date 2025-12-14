@@ -10,19 +10,19 @@ const {
   createPaymentIntent
 } = require('../controllers/orderController');
 const { protect, admin } = require('../middleware/auth');
-const { createLimiter } = require('../middleware/rateLimiter');
+const { apiLimiter, createLimiter } = require('../middleware/rateLimiter');
 
 router.route('/')
   .post(protect, createLimiter, createOrder)
-  .get(protect, admin, getOrders);
+  .get(protect, admin, apiLimiter, getOrders);
 
 router.post('/payment-intent', protect, createLimiter, createPaymentIntent);
-router.get('/myorders', protect, getMyOrders);
+router.get('/myorders', protect, apiLimiter, getMyOrders);
 
 router.route('/:id')
-  .get(protect, getOrderById);
+  .get(protect, apiLimiter, getOrderById);
 
 router.put('/:id/pay', protect, createLimiter, updateOrderToPaid);
-router.put('/:id/deliver', protect, admin, updateOrderToDelivered);
+router.put('/:id/deliver', protect, admin, createLimiter, updateOrderToDelivered);
 
 module.exports = router;

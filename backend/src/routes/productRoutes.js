@@ -8,15 +8,15 @@ const {
   deleteProduct
 } = require('../controllers/productController');
 const { protect, admin } = require('../middleware/auth');
-const { createLimiter } = require('../middleware/rateLimiter');
+const { apiLimiter, createLimiter } = require('../middleware/rateLimiter');
 
 router.route('/')
-  .get(getProducts)
+  .get(apiLimiter, getProducts)
   .post(protect, admin, createLimiter, createProduct);
 
 router.route('/:id')
-  .get(getProductById)
+  .get(apiLimiter, getProductById)
   .put(protect, admin, createLimiter, updateProduct)
-  .delete(protect, admin, deleteProduct);
+  .delete(protect, admin, createLimiter, deleteProduct);
 
 module.exports = router;

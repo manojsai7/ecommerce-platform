@@ -8,14 +8,15 @@ const {
   clearCart
 } = require('../controllers/cartController');
 const { protect } = require('../middleware/auth');
+const { createLimiter } = require('../middleware/rateLimiter');
 
 router.route('/')
   .get(protect, getCart)
-  .post(protect, addToCart)
+  .post(protect, createLimiter, addToCart)
   .delete(protect, clearCart);
 
 router.route('/:itemId')
-  .put(protect, updateCartItem)
+  .put(protect, createLimiter, updateCartItem)
   .delete(protect, removeFromCart);
 
 module.exports = router;

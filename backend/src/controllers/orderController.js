@@ -1,10 +1,12 @@
 const Order = require('../models/Order');
 const Cart = require('../models/Cart');
 const Product = require('../models/Product');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  console.error('STRIPE_SECRET_KEY environment variable is required');
+let stripe;
+if (process.env.STRIPE_SECRET_KEY) {
+  stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+} else {
+  console.warn('Warning: STRIPE_SECRET_KEY environment variable is not set. Payment functionality will be limited.');
 }
 
 // @desc    Create new order
@@ -176,6 +178,12 @@ const updateOrderToDelivered = async (req, res) => {
 // @access  Private
 const createPaymentIntent = async (req, res) => {
   try {
+    if (!stripe) {
+      return res.status(503).json({ 
+        message: 'Payment system is not configured. Please contact support.' 
+      });
+    }
+
     const { amount } = req.body;
 
     const paymentIntent = await stripe.paymentIntents.create({

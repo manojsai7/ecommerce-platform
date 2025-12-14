@@ -1,4 +1,4 @@
-const { Product, Review } = require('../models');
+const { Product, Review, User } = require('../models');
 const { Op } = require('sequelize');
 
 const getAllProducts = async (req, res, next) => {

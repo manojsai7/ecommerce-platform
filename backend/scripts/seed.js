@@ -5,11 +5,16 @@ const seedDatabase = async () => {
   try {
     console.log('Starting database seeding...');
 
+    // WARNING: These are hardcoded credentials for development/testing only
+    // In production, use environment variables or require password change on first login
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@ecommerce.com';
+    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+    
     // Create admin user
-    const adminPassword = await bcrypt.hash('admin123', 10);
+    const hashedAdminPassword = await bcrypt.hash(adminPassword, 10);
     await User.create({
-      email: 'admin@ecommerce.com',
-      password: adminPassword,
+      email: adminEmail,
+      password: hashedAdminPassword,
       firstName: 'Admin',
       lastName: 'User',
       role: 'admin',
@@ -92,8 +97,9 @@ const seedDatabase = async () => {
 
     console.log('\nDatabase seeding completed successfully!');
     console.log('\nLogin credentials:');
-    console.log('Admin: admin@ecommerce.com / admin123');
+    console.log(`Admin: ${adminEmail} / ${adminPassword}`);
     console.log('Customer: customer@example.com / customer123');
+    console.log('\nWARNING: Change these credentials in production!');
     
     process.exit(0);
   } catch (error) {

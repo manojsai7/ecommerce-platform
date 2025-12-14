@@ -17,7 +17,12 @@ module.exports = {
   },
   
   jwt: {
-    secret: process.env.JWT_SECRET || 'your-secret-key',
+    secret: (() => {
+      if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+        throw new Error('JWT_SECRET must be set in production environment');
+      }
+      return process.env.JWT_SECRET || 'your-secret-key-for-development-only';
+    })(),
     expiresIn: process.env.JWT_EXPIRES_IN || '7d',
   },
   

@@ -27,10 +27,14 @@ const processPayment = async ({ amount, method, details }) => {
       };
     } else if (method === 'paypal') {
       // PayPal integration would go here
-      // For now, returning mock response
+      // This is a development-only mock - MUST be replaced with actual PayPal SDK in production
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error('PayPal integration not configured for production');
+      }
+      console.warn('WARNING: Using mock PayPal payment - not for production use');
       return {
         success: true,
-        paymentId: `PAYPAL-${Date.now()}`,
+        paymentId: `PAYPAL-MOCK-${Date.now()}`,
       };
     } else if (method === 'cod') {
       // Cash on delivery

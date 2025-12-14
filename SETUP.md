@@ -22,12 +22,21 @@ The easiest way to get started is using Docker Compose:
 git clone https://github.com/manojsai7/ecommerce-platform
 cd ecommerce-platform
 
+# IMPORTANT: Create .env file for Docker with secure credentials
+cp .env.docker.example .env
+# Edit .env and set secure values for:
+# - JWT_SECRET (required)
+# - POSTGRES_PASSWORD (recommended)
+# - Other credentials as needed
+
 # Start all services
 docker-compose up -d
 
 # Wait for services to be ready, then seed the database
 docker-compose exec backend npm run seed
 ```
+
+**Security Note:** Never use default credentials in production. Always set strong, unique passwords and secrets in your `.env` file.
 
 Your application will be available at:
 - Frontend: http://localhost:3000

@@ -2,8 +2,12 @@ const { Order, Cart, Product } = require('../models');
 const { processPayment } = require('../services/paymentService');
 const { sendOrderConfirmationEmail } = require('../services/emailService');
 
+const { randomUUID } = require('crypto');
+
 const generateOrderNumber = () => {
-  return `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+  const timestamp = Date.now();
+  const uniqueId = randomUUID().split('-')[0].toUpperCase();
+  return `ORD-${timestamp}-${uniqueId}`;
 };
 
 const createOrder = async (req, res, next) => {

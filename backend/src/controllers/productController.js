@@ -57,20 +57,24 @@ const getAllProducts = async (req, res, next) => {
 
 const getProductById = async (req, res, next) => {
   try {
-    const product = await Product.findByPk(req.params.id, {
-      include: [
-        {
-          model: Review,
-          include: ['User'],
-        },
-      ],
-    });
+    const product = await Product.findByPk(req.params.id);
     
     if (!product) {
       return res.status(404).json({ error: 'Product not found' });
     }
     
-    res.json({ product });
+    // Get reviews separately with pagination to avoid performance issues
+    const reviews = await Review.findAll({
+      where: { productId: req.params.id },
+      include: [{ model: User, attributes: ['firstName', 'lastName'] }],
+      limit: 10,
+      order: [['createdAt', 'DESC']],
+    });
+    
+    res.json({ 
+      product,
+      reviews 
+    });
   } catch (error) {
     next(error);
   }

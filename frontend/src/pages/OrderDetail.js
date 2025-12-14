@@ -9,20 +9,20 @@ const OrderDetail = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchOrder = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get(`/orders/${id}`);
+        setOrder(response.data);
+      } catch (error) {
+        console.error('Error fetching order:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchOrder();
   }, [id]);
-
-  const fetchOrder = async () => {
-    try {
-      setLoading(true);
-      const response = await api.get(`/orders/${id}`);
-      setOrder(response.data);
-    } catch (error) {
-      console.error('Error fetching order:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (loading) {
     return <div className="loading">Loading order...</div>;

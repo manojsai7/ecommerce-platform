@@ -10,21 +10,21 @@ const Products = () => {
   const [category, setCategory] = useState('');
 
   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const url = category ? `/products?category=${category}` : '/products';
+        const response = await api.get(url);
+        setProducts(response.data);
+      } catch (err) {
+        setError('Failed to fetch products');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchProducts();
   }, [category]);
-
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      const url = category ? `/products?category=${category}` : '/products';
-      const response = await api.get(url);
-      setProducts(response.data);
-    } catch (err) {
-      setError('Failed to fetch products');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const categories = [...new Set(products.map(p => p.category))];
 

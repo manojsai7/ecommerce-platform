@@ -9,14 +9,6 @@ export const CartProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const { user } = useContext(AuthContext);
 
-  useEffect(() => {
-    if (user) {
-      fetchCart();
-    } else {
-      setCart({ items: [] });
-    }
-  }, [user]);
-
   const fetchCart = async () => {
     try {
       setLoading(true);
@@ -28,6 +20,15 @@ export const CartProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      fetchCart();
+    } else {
+      setCart({ items: [] });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const addToCart = async (productId, quantity = 1) => {
     try {

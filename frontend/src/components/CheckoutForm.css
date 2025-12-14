@@ -1,0 +1,56 @@
+.payment-form {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.payment-form h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.payment-amount {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.payment-amount strong {
+  color: #4CAF50;
+}
+
+#payment-element {
+  margin-bottom: 1.5rem;
+}
+
+.pay-btn {
+  width: 100%;
+  padding: 1rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.pay-btn:hover:not(:disabled) {
+  background-color: #45a049;
+}
+
+.pay-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+#payment-message {
+  color: #f44336;
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #ffebee;
+  border-radius: 4px;
+}
